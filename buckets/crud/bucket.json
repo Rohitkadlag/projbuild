@@ -6,6 +6,12 @@
   "description": "Configurable create, read, update, delete entity with dynamic fields.",
   "icon": "📋",
   "dependencies": ["auth"],
+  "optionalDependencies": [],
+  "capabilities": {
+    "requires": ["user.identity"],
+    "provides": ["catalog.read", "catalog.write", "catalog.manage"]
+  },
+  "bindings": {},
   "frontend": {
     "routes": ["/entities"],
     "components": ["EntityTable", "EntityForm"]
@@ -22,31 +28,42 @@
     "listens": ["user.logged_in"]
   },
   "env": ["DATABASE_URL"],
+  "previewRequirements": {
+    "env": [],
+    "seed": true
+  },
   "configSchema": {
     "entityName": {
       "type": "string",
       "label": "Entity Name",
-      "description": "Name of the model (e.g. Customer, Product, Order)",
+      "description": "Model name (Customer, Product, Order...)",
       "default": "Customer",
       "required": true,
       "placeholder": "Customer"
     },
+    "entityType": {
+      "type": "select",
+      "label": "Entity Type",
+      "description": "How this entity is used in the app",
+      "options": ["generic", "commerce", "content", "user-data"],
+      "default": "generic"
+    },
     "tableView": {
       "type": "boolean",
-      "label": "Enable Table View",
-      "description": "Show data in a sortable table",
+      "label": "Table View",
+      "description": "Display records in a sortable table",
       "default": true
     },
     "softDelete": {
       "type": "boolean",
       "label": "Soft Delete",
-      "description": "Mark records as deleted instead of removing them",
+      "description": "Mark as deleted instead of removing",
       "default": false
     },
     "fields": {
       "type": "array",
       "label": "Fields",
-      "description": "Define the fields for this entity",
+      "description": "Define entity fields",
       "itemType": "object",
       "default": [
         { "name": "fullName", "type": "string", "required": true },
@@ -61,7 +78,7 @@
         },
         "type": {
           "type": "select",
-          "label": "Field Type",
+          "label": "Type",
           "options": ["string", "number", "boolean", "date"],
           "default": "string"
         },

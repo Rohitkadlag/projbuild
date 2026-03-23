@@ -1,0 +1,66 @@
+{
+  "name": "cart",
+  "displayName": "Shopping Cart",
+  "version": "1.0.0",
+  "category": "commerce",
+  "description": "Full shopping cart with add/remove, quantities, and checkout flow.",
+  "icon": "🛒",
+  "dependencies": [],
+  "optionalDependencies": ["auth", "crud"],
+  "capabilities": {
+    "requires": ["catalog.read"],
+    "provides": ["cart.manage"]
+  },
+  "bindings": {
+    "catalogSource": "crud",
+    "userSource": "auth"
+  },
+  "frontend": {
+    "routes": ["/cart", "/checkout"],
+    "components": ["AddToCartButton", "CartDrawer", "CartPage", "CheckoutForm"]
+  },
+  "backend": {
+    "routes": ["/api/cart", "/api/cart/:id", "/api/checkout"],
+    "services": ["cartService"]
+  },
+  "database": {
+    "models": ["Cart", "CartItem"]
+  },
+  "events": {
+    "emits": ["cart.item_added", "cart.item_removed", "order.placed"],
+    "listens": ["user.logged_in", "entity.deleted"]
+  },
+  "env": ["DATABASE_URL"],
+  "previewRequirements": {
+    "env": [],
+    "seed": true,
+    "sandboxEnv": {}
+  },
+  "configSchema": {
+    "guestCart": {
+      "type": "boolean",
+      "label": "Allow Guest Cart",
+      "description": "Let unauthenticated users add to cart (stored in session)",
+      "default": true
+    },
+    "maxQuantity": {
+      "type": "number",
+      "label": "Max Quantity Per Item",
+      "default": 99,
+      "min": 1,
+      "max": 999
+    },
+    "checkoutEnabled": {
+      "type": "boolean",
+      "label": "Enable Checkout",
+      "description": "Show checkout flow with order summary",
+      "default": true
+    },
+    "paymentProvider": {
+      "type": "select",
+      "label": "Payment Provider",
+      "options": ["none", "stripe", "mock"],
+      "default": "mock"
+    }
+  }
+}

@@ -3,7 +3,8 @@ export type BucketCategory =
   | "data"
   | "engagement"
   | "admin"
-  | "utility";
+  | "utility"
+  | "commerce";
 
 export type BucketConfigField =
   | {
@@ -55,30 +56,53 @@ export interface BucketManifest {
   category: BucketCategory;
   description?: string;
   icon?: string;
+
   dependencies: string[];
+  optionalDependencies: string[];
+
+  capabilities: {
+    requires: string[];   // e.g. ["catalog.read"]
+    provides: string[];   // e.g. ["cart.manage", "user.identity"]
+  };
+
+  bindings: Record<string, string>; // e.g. { "catalogSource": "crud", "userSource": "auth" }
+
   frontend: {
     routes: string[];
     components: string[];
   };
+
   backend: {
     routes: string[];
     services: string[];
   };
+
   database: {
     models: string[];
   };
+
   events: {
     emits: string[];
     listens: string[];
   };
+
   env: string[];
+
+  previewRequirements: {
+    env: string[];
+    seed: boolean;
+    sandboxEnv?: Record<string, string>;
+  };
+
   configSchema: Record<string, BucketConfigField>;
 }
 
 export interface PlacedBucket {
   id: string;
   bucketName: string;
-  label: string;
+  displayName: string;
+  icon: string;
+  category: string;
   position: { x: number; y: number };
   config: Record<string, unknown>;
 }

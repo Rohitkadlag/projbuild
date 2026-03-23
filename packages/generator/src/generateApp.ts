@@ -5,6 +5,7 @@ import { injectBucket } from "./injectBucket";
 import { mergePrismaSchemas } from "./mergePrismaSchemas";
 import { generateRouteIndex } from "./generateRouteIndex";
 import { writeEnvAndReadme } from "./writeEnvAndReadme";
+import { generateSeedData } from "./generateSeedData";
 import { zipApp } from "./zipApp";
 
 export async function generateApp(
@@ -26,6 +27,9 @@ export async function generateApp(
 
   console.log(`[generator] Generating route index...`);
   await generateRouteIndex(app, outputDir);
+
+  console.log(`[generator] Generating seed data...`);
+  await generateSeedData(app, outputDir);
 
   console.log(`[generator] Writing env and README...`);
   await writeEnvAndReadme(app, outputDir);

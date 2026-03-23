@@ -3,9 +3,17 @@
   "displayName": "Dashboard",
   "version": "1.0.0",
   "category": "core",
-  "description": "Overview dashboard with metrics, charts, and recent activity.",
+  "description": "Overview dashboard with metrics, activity feed, and charts.",
   "icon": "📊",
   "dependencies": ["auth"],
+  "optionalDependencies": ["crud", "cart"],
+  "capabilities": {
+    "requires": ["user.identity"],
+    "provides": ["dashboard.view"]
+  },
+  "bindings": {
+    "dataSource": "crud"
+  },
   "frontend": {
     "routes": ["/dashboard"],
     "components": ["MetricsCard", "ActivityFeed", "StatsGrid"]
@@ -22,6 +30,10 @@
     "listens": ["entity.created", "entity.updated", "user.created"]
   },
   "env": ["DATABASE_URL"],
+  "previewRequirements": {
+    "env": [],
+    "seed": false
+  },
   "configSchema": {
     "title": {
       "type": "string",
@@ -31,7 +43,8 @@
     },
     "showWelcome": {
       "type": "boolean",
-      "label": "Show Welcome Banner",
+      "label": "Welcome Banner",
+      "description": "Show welcome message",
       "default": true
     },
     "metricsStyle": {

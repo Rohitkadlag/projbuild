@@ -21,13 +21,43 @@ export type GenerationStatus =
   | "done"
   | "error";
 
+export type PreviewStatus =
+  | "idle"
+  | "analyzing"
+  | "ready"
+  | "needs-input"
+  | "error";
+
+interface ComposedAppSummary {
+  appName: string;
+  buckets: string[];
+  dbModels: string[];
+  backendRoutes: string[];
+  frontendRoutes: string[];
+  env: string[];
+  previewEnv: Record<string, string>;
+  bindings: unknown[];
+  needsSeed: boolean;
+}
+
 interface BuilderState {
   appName: string;
   buckets: PlacedBucket[];
   selectedBucketId: string | null;
+
   generationStatus: GenerationStatus;
   generationLog: string[];
   downloadUrl: string | null;
+
+  // AI
+  aiThinking: boolean;
+  aiExplanation: string | null;
+
+  // Preview
+  previewStatus: PreviewStatus;
+  previewComposed: ComposedAppSummary | null;
+  previewMissingEnv: string[];
+  showPreviewPanel: boolean;
 
   setAppName: (name: string) => void;
   addBucket: (bucket: PlacedBucket) => void;
@@ -35,10 +65,20 @@ interface BuilderState {
   updateBucketPosition: (id: string, pos: { x: number; y: number }) => void;
   removeBucket: (id: string) => void;
   selectBucket: (id: string | null) => void;
+  clearBuckets: () => void;
+
   setGenerationStatus: (status: GenerationStatus) => void;
   appendLog: (msg: string) => void;
   clearLog: () => void;
   setDownloadUrl: (url: string | null) => void;
+
+  setAiThinking: (v: boolean) => void;
+  setAiExplanation: (v: string | null) => void;
+
+  setPreviewStatus: (s: PreviewStatus) => void;
+  setPreviewComposed: (c: ComposedAppSummary | null) => void;
+  setPreviewMissingEnv: (env: string[]) => void;
+  setShowPreviewPanel: (v: boolean) => void;
 }
 
 export const useBuilderStore = create<BuilderState>((set) => ({
@@ -48,6 +88,12 @@ export const useBuilderStore = create<BuilderState>((set) => ({
   generationStatus: "idle",
   generationLog: [],
   downloadUrl: null,
+  aiThinking: false,
+  aiExplanation: null,
+  previewStatus: "idle",
+  previewComposed: null,
+  previewMissingEnv: [],
+  showPreviewPanel: false,
 
   setAppName: (name) => set({ appName: name }),
 
@@ -86,12 +132,19 @@ export const useBuilderStore = create<BuilderState>((set) => ({
 
   selectBucket: (id) => set({ selectedBucketId: id }),
 
-  setGenerationStatus: (status) => set({ generationStatus: status }),
+  clearBuckets: () => set({ buckets: [], selectedBucketId: null }),
 
+  setGenerationStatus: (status) => set({ generationStatus: status }),
   appendLog: (msg) =>
     set((state) => ({ generationLog: [...state.generationLog, msg] })),
-
   clearLog: () => set({ generationLog: [] }),
-
   setDownloadUrl: (url) => set({ downloadUrl: url }),
+
+  setAiThinking: (v) => set({ aiThinking: v }),
+  setAiExplanation: (v) => set({ aiExplanation: v }),
+
+  setPreviewStatus: (s) => set({ previewStatus: s }),
+  setPreviewComposed: (c) => set({ previewComposed: c }),
+  setPreviewMissingEnv: (env) => set({ previewMissingEnv: env }),
+  setShowPreviewPanel: (v) => set({ showPreviewPanel: v }),
 }));

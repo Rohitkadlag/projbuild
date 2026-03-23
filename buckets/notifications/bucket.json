@@ -3,9 +3,15 @@
   "displayName": "Notifications",
   "version": "1.0.0",
   "category": "engagement",
-  "description": "In-app and email notifications system.",
+  "description": "In-app and email notification system with event listeners.",
   "icon": "🔔",
   "dependencies": ["auth"],
+  "optionalDependencies": [],
+  "capabilities": {
+    "requires": ["user.identity"],
+    "provides": ["notification.send"]
+  },
+  "bindings": {},
   "frontend": {
     "routes": ["/notifications"],
     "components": ["NotificationBell", "NotificationList"]
@@ -22,15 +28,19 @@
     "listens": ["user.created", "entity.created"]
   },
   "env": ["DATABASE_URL"],
+  "previewRequirements": {
+    "env": [],
+    "seed": false
+  },
   "configSchema": {
     "emailNotifications": {
       "type": "boolean",
-      "label": "Enable Email Notifications",
+      "label": "Email Notifications",
       "default": false
     },
     "inAppNotifications": {
       "type": "boolean",
-      "label": "Enable In-App Notifications",
+      "label": "In-App Notifications",
       "default": true
     },
     "smtpProvider": {

@@ -6,6 +6,7 @@ const bucketCategorySchema = z.enum([
   "engagement",
   "admin",
   "utility",
+  "commerce",
 ]);
 
 const bucketConfigFieldSchema: z.ZodTypeAny = z.lazy(() =>
@@ -61,23 +62,44 @@ export const bucketManifestSchema = z.object({
   category: bucketCategorySchema,
   description: z.string().optional(),
   icon: z.string().optional(),
+
   dependencies: z.array(z.string()),
+  optionalDependencies: z.array(z.string()).default([]),
+
+  capabilities: z.object({
+    requires: z.array(z.string()),
+    provides: z.array(z.string()),
+  }).default({ requires: [], provides: [] }),
+
+  bindings: z.record(z.string()).default({}),
+
   frontend: z.object({
     routes: z.array(z.string()),
     components: z.array(z.string()),
   }),
+
   backend: z.object({
     routes: z.array(z.string()),
     services: z.array(z.string()),
   }),
+
   database: z.object({
     models: z.array(z.string()),
   }),
+
   events: z.object({
     emits: z.array(z.string()),
     listens: z.array(z.string()),
   }),
+
   env: z.array(z.string()),
+
+  previewRequirements: z.object({
+    env: z.array(z.string()),
+    seed: z.boolean(),
+    sandboxEnv: z.record(z.string()).optional(),
+  }).default({ env: [], seed: false }),
+
   configSchema: z.record(bucketConfigFieldSchema),
 });
 

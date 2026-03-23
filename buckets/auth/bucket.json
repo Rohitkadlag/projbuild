@@ -6,6 +6,12 @@
   "description": "Login, signup, JWT sessions, and user management.",
   "icon": "🔐",
   "dependencies": [],
+  "optionalDependencies": [],
+  "capabilities": {
+    "requires": [],
+    "provides": ["user.identity", "user.session"]
+  },
+  "bindings": {},
   "frontend": {
     "routes": ["/login", "/signup", "/profile"],
     "components": ["LoginForm", "SignupForm", "UserMenu"]
@@ -22,6 +28,13 @@
     "listens": []
   },
   "env": ["DATABASE_URL", "JWT_SECRET"],
+  "previewRequirements": {
+    "env": [],
+    "seed": true,
+    "sandboxEnv": {
+      "JWT_SECRET": "sandbox-jwt-secret-preview-only"
+    }
+  },
   "configSchema": {
     "googleLogin": {
       "type": "boolean",

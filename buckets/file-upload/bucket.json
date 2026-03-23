@@ -1,0 +1,46 @@
+{
+  "name": "file-upload",
+  "displayName": "File Upload",
+  "version": "1.0.0",
+  "category": "utility",
+  "description": "File upload, storage, and management.",
+  "icon": "📁",
+  "dependencies": ["auth"],
+  "frontend": {
+    "routes": ["/files"],
+    "components": ["FileUploader", "FileList"]
+  },
+  "backend": {
+    "routes": ["/api/files"],
+    "services": ["fileService"]
+  },
+  "database": {
+    "models": ["File"]
+  },
+  "events": {
+    "emits": ["file.uploaded", "file.deleted"],
+    "listens": []
+  },
+  "env": ["DATABASE_URL", "STORAGE_BUCKET", "STORAGE_ENDPOINT"],
+  "configSchema": {
+    "provider": {
+      "type": "select",
+      "label": "Storage Provider",
+      "options": ["local", "s3", "cloudinary", "supabase"],
+      "default": "local"
+    },
+    "maxFileSizeMb": {
+      "type": "number",
+      "label": "Max File Size (MB)",
+      "default": 10,
+      "min": 1,
+      "max": 500
+    },
+    "allowedTypes": {
+      "type": "array",
+      "label": "Allowed File Types",
+      "itemType": "string",
+      "default": ["image/*", "application/pdf"]
+    }
+  }
+}

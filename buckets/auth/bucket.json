@@ -1,0 +1,54 @@
+{
+  "name": "auth",
+  "displayName": "Authentication",
+  "version": "1.0.0",
+  "category": "core",
+  "description": "Login, signup, JWT sessions, and user management.",
+  "icon": "🔐",
+  "dependencies": [],
+  "frontend": {
+    "routes": ["/login", "/signup", "/profile"],
+    "components": ["LoginForm", "SignupForm", "UserMenu"]
+  },
+  "backend": {
+    "routes": ["/api/auth/login", "/api/auth/signup", "/api/auth/me"],
+    "services": ["authService"]
+  },
+  "database": {
+    "models": ["User"]
+  },
+  "events": {
+    "emits": ["user.created", "user.logged_in"],
+    "listens": []
+  },
+  "env": ["DATABASE_URL", "JWT_SECRET"],
+  "configSchema": {
+    "googleLogin": {
+      "type": "boolean",
+      "label": "Enable Google Login",
+      "description": "Allow users to sign in with their Google account",
+      "default": false
+    },
+    "emailVerification": {
+      "type": "boolean",
+      "label": "Require Email Verification",
+      "description": "Send verification email before allowing login",
+      "default": true
+    },
+    "sessionTtlHours": {
+      "type": "number",
+      "label": "Session TTL (hours)",
+      "description": "How long JWT tokens remain valid",
+      "default": 24,
+      "min": 1,
+      "max": 720
+    },
+    "roles": {
+      "type": "select",
+      "label": "Role Strategy",
+      "description": "User roles configuration",
+      "options": ["simple", "rbac", "none"],
+      "default": "simple"
+    }
+  }
+}

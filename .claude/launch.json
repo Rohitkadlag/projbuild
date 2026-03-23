@@ -1,0 +1,12 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "builder-web",
+      "runtimeExecutable": "/opt/homebrew/bin/pnpm",
+      "runtimeArgs": ["--filter", "@app-builder/builder-web", "dev"],
+      "port": 3000,
+      "autoPort": true
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+model Entity {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  status      String   @default("active")
+  data        Json?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

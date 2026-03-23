@@ -1,0 +1,76 @@
+{
+  "name": "crud",
+  "displayName": "CRUD Entity",
+  "version": "1.0.0",
+  "category": "data",
+  "description": "Configurable create, read, update, delete entity with dynamic fields.",
+  "icon": "📋",
+  "dependencies": ["auth"],
+  "frontend": {
+    "routes": ["/entities"],
+    "components": ["EntityTable", "EntityForm"]
+  },
+  "backend": {
+    "routes": ["/api/entities"],
+    "services": ["entityService"]
+  },
+  "database": {
+    "models": ["Entity"]
+  },
+  "events": {
+    "emits": ["entity.created", "entity.updated", "entity.deleted"],
+    "listens": ["user.logged_in"]
+  },
+  "env": ["DATABASE_URL"],
+  "configSchema": {
+    "entityName": {
+      "type": "string",
+      "label": "Entity Name",
+      "description": "Name of the model (e.g. Customer, Product, Order)",
+      "default": "Customer",
+      "required": true,
+      "placeholder": "Customer"
+    },
+    "tableView": {
+      "type": "boolean",
+      "label": "Enable Table View",
+      "description": "Show data in a sortable table",
+      "default": true
+    },
+    "softDelete": {
+      "type": "boolean",
+      "label": "Soft Delete",
+      "description": "Mark records as deleted instead of removing them",
+      "default": false
+    },
+    "fields": {
+      "type": "array",
+      "label": "Fields",
+      "description": "Define the fields for this entity",
+      "itemType": "object",
+      "default": [
+        { "name": "fullName", "type": "string", "required": true },
+        { "name": "email", "type": "string", "required": true }
+      ],
+      "itemSchema": {
+        "name": {
+          "type": "string",
+          "label": "Field Name",
+          "default": "",
+          "placeholder": "fieldName"
+        },
+        "type": {
+          "type": "select",
+          "label": "Field Type",
+          "options": ["string", "number", "boolean", "date"],
+          "default": "string"
+        },
+        "required": {
+          "type": "boolean",
+          "label": "Required",
+          "default": false
+        }
+      }
+    }
+  }
+}

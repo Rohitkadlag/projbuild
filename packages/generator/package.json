@@ -1,0 +1,22 @@
+{
+  "name": "@app-builder/generator",
+  "version": "1.0.0",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "dependencies": {
+    "@app-builder/bucket-sdk": "workspace:*",
+    "@app-builder/composer": "workspace:*",
+    "fs-extra": "^11.2.0",
+    "archiver": "^7.0.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.5",
+    "@types/node": "^20.12.12",
+    "@types/fs-extra": "^11.0.4",
+    "@types/archiver": "^6.0.2"
+  }
+}

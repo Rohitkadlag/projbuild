@@ -1,0 +1,49 @@
+{
+  "name": "dashboard",
+  "displayName": "Dashboard",
+  "version": "1.0.0",
+  "category": "core",
+  "description": "Overview dashboard with metrics, charts, and recent activity.",
+  "icon": "📊",
+  "dependencies": ["auth"],
+  "frontend": {
+    "routes": ["/dashboard"],
+    "components": ["MetricsCard", "ActivityFeed", "StatsGrid"]
+  },
+  "backend": {
+    "routes": ["/api/dashboard/stats"],
+    "services": ["dashboardService"]
+  },
+  "database": {
+    "models": []
+  },
+  "events": {
+    "emits": [],
+    "listens": ["entity.created", "entity.updated", "user.created"]
+  },
+  "env": ["DATABASE_URL"],
+  "configSchema": {
+    "title": {
+      "type": "string",
+      "label": "Dashboard Title",
+      "default": "Dashboard",
+      "placeholder": "My Dashboard"
+    },
+    "showWelcome": {
+      "type": "boolean",
+      "label": "Show Welcome Banner",
+      "default": true
+    },
+    "metricsStyle": {
+      "type": "select",
+      "label": "Metrics Style",
+      "options": ["cards", "grid", "list"],
+      "default": "cards"
+    },
+    "showCharts": {
+      "type": "boolean",
+      "label": "Enable Charts",
+      "default": true
+    }
+  }
+}

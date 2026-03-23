@@ -6,3 +6,5 @@ export * from "./writeEnvAndReadme";
 export * from "./generateSeedData";
 export * from "./zipApp";
 export * from "./generateApp";
+export * from "./previewApp";
+export * from "./generateWebApp";

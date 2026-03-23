@@ -7,6 +7,7 @@ import { generateRouteIndex } from "./generateRouteIndex";
 import { writeEnvAndReadme } from "./writeEnvAndReadme";
 import { generateSeedData } from "./generateSeedData";
 import { zipApp } from "./zipApp";
+import { generateWebApp } from "./generateWebApp";
 
 export async function generateApp(
   app: ComposedApp,
@@ -33,6 +34,9 @@ export async function generateApp(
 
   console.log(`[generator] Writing env and README...`);
   await writeEnvAndReadme(app, outputDir);
+
+  console.log(`[generator] Generating frontend...`);
+  await generateWebApp(app, outputDir, 3001);
 
   console.log(`[generator] Creating ZIP...`);
   const zipPath = await zipApp(outputDir, app.appName);

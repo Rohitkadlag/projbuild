@@ -6,21 +6,44 @@ export async function generateRouteIndex(
   app: ComposedApp,
   outputDir: string
 ): Promise<void> {
-  const bucketNames = app.buckets.map((b) => b.name);
+  const routesDir = path.join(outputDir, "apps/api/src/routes");
+  await fs.ensureDir(routesDir);
 
-  const imports = bucketNames
-    .map((name) => `import ${name}Routes from "./routes/${name}.routes";`)
+  // Scan actual injected route files rather than assuming names from bucket names
+  const routeFiles = (await fs.readdir(routesDir))
+    .filter((f) => f.endsWith(".routes.ts"))
+    .sort();
+
+  // Derive entity plural for the crud entity route prefix
+  const crudConfig = app.configs?.["crud"] as Record<string, unknown> | undefined;
+  const entityName =
+    typeof crudConfig?.["entityName"] === "string"
+      ? crudConfig["entityName"]
+      : "Item";
+  const entityPlural = entityName.toLowerCase() + "s";
+
+  // Map filename → mount prefix
+  function prefixFor(filename: string): string {
+    const base = filename.replace(".routes.ts", "");
+    if (base === "entity") return `/api/${entityPlural}`;
+    if (base === "auth") return "/api/auth";
+    if (base === "cart") return "/api/cart";
+    if (base === "dashboard") return "/api/dashboard";
+    if (base === "notifications") return "/api/notifications";
+    return `/api/${base}`;
+  }
+
+  const imports = routeFiles
+    .map((f, i) => {
+      const varName = f.replace(".routes.ts", "").replace(/-/g, "_") + "Routes";
+      return `import ${varName} from "./routes/${f.replace(".ts", "")}";`;
+    })
     .join("\n");
 
-  const uses = bucketNames
-    .map((name) => {
-      const routes = app.backendRoutes.filter((r) =>
-        r.includes(`/${name}`)
-      );
-      const prefix = routes[0]
-        ? routes[0].replace(/\/[^/]+$/, "") || `/${name}`
-        : `/api/${name}`;
-      return `app.use("${prefix}", ${name}Routes);`;
+  const uses = routeFiles
+    .map((f) => {
+      const varName = f.replace(".routes.ts", "").replace(/-/g, "_") + "Routes";
+      return `app.use("${prefixFor(f)}", ${varName});`;
     })
     .join("\n");
 
@@ -32,7 +55,7 @@ ${imports}
 const app = express();
 
 app.use(helmet());
-app.use(cors());
+app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
 
 ${uses}
@@ -49,7 +72,6 @@ app.listen(PORT, () => {
 export default app;
 `;
 
-  await fs.ensureDir(path.join(outputDir, "apps/api/src"));
   await fs.writeFile(
     path.join(outputDir, "apps/api/src/index.ts"),
     content,

@@ -26,6 +26,8 @@ export type PreviewStatus =
   | "analyzing"
   | "ready"
   | "needs-input"
+  | "building"
+  | "live"
   | "error";
 
 interface ComposedAppSummary {
@@ -58,6 +60,13 @@ interface BuilderState {
   previewComposed: ComposedAppSummary | null;
   previewMissingEnv: string[];
   showPreviewPanel: boolean;
+  previewBuildId: string | null;
+  previewApiUrl: string | null;
+  previewWebUrl: string | null;
+  previewWebPort: number | null;
+  previewLogs: string[];
+  previewDemoCredentials: { email: string; password: string } | null;
+  previewEndpoints: Array<{ method: string; path: string; url: string }>;
 
   setAppName: (name: string) => void;
   addBucket: (bucket: PlacedBucket) => void;
@@ -79,6 +88,14 @@ interface BuilderState {
   setPreviewComposed: (c: ComposedAppSummary | null) => void;
   setPreviewMissingEnv: (env: string[]) => void;
   setShowPreviewPanel: (v: boolean) => void;
+  setPreviewBuildId: (id: string | null) => void;
+  setPreviewApiUrl: (url: string | null) => void;
+  setPreviewWebUrl: (url: string | null) => void;
+  setPreviewWebPort: (port: number | null) => void;
+  appendPreviewLog: (msg: string) => void;
+  clearPreviewLogs: () => void;
+  setPreviewDemoCredentials: (creds: { email: string; password: string } | null) => void;
+  setPreviewEndpoints: (endpoints: Array<{ method: string; path: string; url: string }>) => void;
 }
 
 export const useBuilderStore = create<BuilderState>((set) => ({
@@ -94,6 +111,13 @@ export const useBuilderStore = create<BuilderState>((set) => ({
   previewComposed: null,
   previewMissingEnv: [],
   showPreviewPanel: false,
+  previewBuildId: null,
+  previewApiUrl: null,
+  previewWebUrl: null,
+  previewWebPort: null,
+  previewLogs: [],
+  previewDemoCredentials: null,
+  previewEndpoints: [],
 
   setAppName: (name) => set({ appName: name }),
 
@@ -147,4 +171,12 @@ export const useBuilderStore = create<BuilderState>((set) => ({
   setPreviewComposed: (c) => set({ previewComposed: c }),
   setPreviewMissingEnv: (env) => set({ previewMissingEnv: env }),
   setShowPreviewPanel: (v) => set({ showPreviewPanel: v }),
+  setPreviewBuildId: (id) => set({ previewBuildId: id }),
+  setPreviewApiUrl: (url) => set({ previewApiUrl: url }),
+  setPreviewWebUrl: (url) => set({ previewWebUrl: url }),
+  setPreviewWebPort: (port) => set({ previewWebPort: port }),
+  appendPreviewLog: (msg) => set((state) => ({ previewLogs: [...state.previewLogs, msg] })),
+  clearPreviewLogs: () => set({ previewLogs: [] }),
+  setPreviewDemoCredentials: (creds) => set({ previewDemoCredentials: creds }),
+  setPreviewEndpoints: (endpoints) => set({ previewEndpoints: endpoints }),
 }));

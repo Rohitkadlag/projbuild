@@ -30,6 +30,11 @@ export async function generateRouteIndex(
     if (base === "cart") return "/api/cart";
     if (base === "dashboard") return "/api/dashboard";
     if (base === "notifications") return "/api/notifications";
+    if (base === "blog") return "/api/posts";
+    if (base === "team") return "/api/team";
+    if (base === "reviews") return "/api/reviews";
+    if (base === "bookings") return "/api/bookings";
+    if (base === "payments") return "/api/payments";
     return `/api/${base}`;
   }
 

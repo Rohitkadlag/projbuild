@@ -1,0 +1,8 @@
+model Review {
+  id        String   @id @default(cuid())
+  entityId  String
+  rating    Int
+  comment   String   @default("")
+  authorId  String
+  createdAt DateTime @default(now())
+}

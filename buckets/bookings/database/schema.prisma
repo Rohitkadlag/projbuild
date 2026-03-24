@@ -1,0 +1,10 @@
+model Booking {
+  id              String   @id @default(cuid())
+  title           String
+  notes           String   @default("")
+  scheduledAt     DateTime
+  durationMinutes Int      @default(30)
+  status          String   @default("pending")
+  userId          String
+  createdAt       DateTime @default(now())
+}

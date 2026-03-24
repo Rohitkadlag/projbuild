@@ -1,0 +1,23 @@
+{
+  "name": "blog",
+  "displayName": "Blog / Posts",
+  "version": "1.0.0",
+  "category": "content",
+  "description": "Full blog system with posts, categories, tags, and rich content.",
+  "icon": "📝",
+  "dependencies": ["auth"],
+  "optionalDependencies": [],
+  "capabilities": { "requires": ["user.identity"], "provides": ["content.posts", "content.read"] },
+  "bindings": {},
+  "frontend": { "routes": ["/posts", "/posts/new", "/posts/[id]"], "components": ["PostCard", "PostEditor", "PostList"] },
+  "backend": { "routes": ["/api/posts", "/api/posts/:id"], "services": ["postService"] },
+  "database": { "models": ["Post", "Category", "Tag"] },
+  "events": { "emits": ["post.published", "post.created"], "listens": [] },
+  "env": ["DATABASE_URL"],
+  "previewRequirements": { "env": [], "seed": true, "sandboxEnv": {} },
+  "configSchema": {
+    "allowComments": { "type": "boolean", "label": "Allow Comments", "default": true },
+    "categories": { "type": "boolean", "label": "Enable Categories", "default": true },
+    "richEditor": { "type": "boolean", "label": "Rich Text Editor", "default": false }
+  }
+}

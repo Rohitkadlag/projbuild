@@ -1,0 +1,7 @@
+model TeamMember {
+  id       String   @id @default(cuid())
+  email    String   @unique
+  role     String   @default("member")
+  userId   String?
+  joinedAt DateTime @default(now())
+}

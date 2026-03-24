@@ -1,0 +1,10 @@
+model Invoice {
+  id          String    @id @default(cuid())
+  amount      Float
+  description String    @default("")
+  status      String    @default("pending")
+  dueDate     DateTime
+  paidAt      DateTime?
+  userId      String
+  createdAt   DateTime  @default(now())
+}

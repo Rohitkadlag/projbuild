@@ -7,6 +7,7 @@ const bucketCategorySchema = z.enum([
   "admin",
   "utility",
   "commerce",
+  "content",
 ]);
 
 const bucketConfigFieldSchema: z.ZodTypeAny = z.lazy(() =>

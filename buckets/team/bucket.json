@@ -1,0 +1,22 @@
+{
+  "name": "team",
+  "displayName": "Team & Members",
+  "version": "1.0.0",
+  "category": "core",
+  "description": "Team workspaces with member invites, roles, and permissions.",
+  "icon": "👥",
+  "dependencies": ["auth"],
+  "optionalDependencies": [],
+  "capabilities": { "requires": ["user.identity"], "provides": ["team.manage", "team.read"] },
+  "bindings": {},
+  "frontend": { "routes": ["/team", "/team/invite"], "components": ["MemberCard", "InviteForm", "RoleBadge"] },
+  "backend": { "routes": ["/api/team", "/api/team/members", "/api/team/invite"], "services": ["teamService"] },
+  "database": { "models": ["TeamMember", "Invite"] },
+  "events": { "emits": ["team.member_added", "team.invite_sent"], "listens": [] },
+  "env": ["DATABASE_URL"],
+  "previewRequirements": { "env": [], "seed": true, "sandboxEnv": {} },
+  "configSchema": {
+    "maxMembers": { "type": "number", "label": "Max Members", "default": 10, "min": 2, "max": 500 },
+    "roles": { "type": "select", "label": "Role Strategy", "options": ["simple", "custom"], "default": "simple" }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "name": "reviews",
+  "displayName": "Reviews & Ratings",
+  "version": "1.0.0",
+  "category": "engagement",
+  "description": "Star ratings and text reviews for any entity.",
+  "icon": "⭐",
+  "dependencies": ["auth", "crud"],
+  "optionalDependencies": [],
+  "capabilities": { "requires": ["user.identity", "catalog.read"], "provides": ["reviews.read", "reviews.write"] },
+  "bindings": {},
+  "frontend": { "routes": ["/reviews"], "components": ["StarRating", "ReviewCard", "ReviewForm"] },
+  "backend": { "routes": ["/api/reviews"], "services": ["reviewService"] },
+  "database": { "models": ["Review"] },
+  "events": { "emits": ["review.created"], "listens": [] },
+  "env": ["DATABASE_URL"],
+  "previewRequirements": { "env": [], "seed": true, "sandboxEnv": {} },
+  "configSchema": {
+    "allowAnonymous": { "type": "boolean", "label": "Allow Anonymous Reviews", "default": false },
+    "maxStars": { "type": "number", "label": "Max Stars", "default": 5, "min": 3, "max": 10 },
+    "moderationRequired": { "type": "boolean", "label": "Require Moderation", "default": false }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "name": "bookings",
+  "displayName": "Bookings & Appointments",
+  "version": "1.0.0",
+  "category": "data",
+  "description": "Appointment and booking system with time slots and status tracking.",
+  "icon": "📅",
+  "dependencies": ["auth"],
+  "optionalDependencies": [],
+  "capabilities": { "requires": ["user.identity"], "provides": ["bookings.manage", "bookings.read"] },
+  "bindings": {},
+  "frontend": { "routes": ["/bookings", "/bookings/new"], "components": ["BookingCard", "BookingForm", "TimeSlotPicker"] },
+  "backend": { "routes": ["/api/bookings"], "services": ["bookingService"] },
+  "database": { "models": ["Booking"] },
+  "events": { "emits": ["booking.created", "booking.cancelled"], "listens": [] },
+  "env": ["DATABASE_URL"],
+  "previewRequirements": { "env": [], "seed": true, "sandboxEnv": {} },
+  "configSchema": {
+    "slotDurationMinutes": { "type": "number", "label": "Slot Duration (min)", "default": 30, "min": 15, "max": 240 },
+    "requiresApproval": { "type": "boolean", "label": "Require Approval", "default": false },
+    "maxAdvanceDays": { "type": "number", "label": "Max Advance Days", "default": 30, "min": 1, "max": 365 }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "name": "payments",
+  "displayName": "Payments & Invoices",
+  "version": "1.0.0",
+  "category": "commerce",
+  "description": "Invoice management, payment tracking, and billing records.",
+  "icon": "💳",
+  "dependencies": ["auth"],
+  "optionalDependencies": ["cart"],
+  "capabilities": { "requires": ["user.identity"], "provides": ["payments.process", "payments.read"] },
+  "bindings": {},
+  "frontend": { "routes": ["/payments", "/invoices"], "components": ["InvoiceCard", "PaymentStatus", "BillingHistory"] },
+  "backend": { "routes": ["/api/payments", "/api/invoices"], "services": ["paymentService"] },
+  "database": { "models": ["Invoice", "Payment"] },
+  "events": { "emits": ["payment.created", "invoice.paid"], "listens": ["cart.checkout"] },
+  "env": ["DATABASE_URL"],
+  "previewRequirements": { "env": [], "seed": true, "sandboxEnv": {} },
+  "configSchema": {
+    "currency": { "type": "select", "label": "Currency", "options": ["USD", "EUR", "GBP", "INR"], "default": "USD" },
+    "taxRate": { "type": "number", "label": "Tax Rate (%)", "default": 10, "min": 0, "max": 30 },
+    "stripeEnabled": { "type": "boolean", "label": "Enable Stripe", "default": false }
+  }
+}

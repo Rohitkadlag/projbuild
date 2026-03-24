@@ -4,7 +4,8 @@ export type BucketCategory =
   | "engagement"
   | "admin"
   | "utility"
-  | "commerce";
+  | "commerce"
+  | "content";
 
 export type BucketConfigField =
   | {
